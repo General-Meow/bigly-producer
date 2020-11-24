@@ -1,0 +1,54 @@
+spring:
+  kafka:
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      compression-type: gzip
+      client-id: bigly-producer
+    bootstrap-servers: 192.168.1.81:9092
+
+
+app:
+  test: blah
+  companies:
+    -
+      code: ASS
+      name: Associated Assistants
+      price: 1.22
+    -
+      code: BAN
+      name: Buttered Ally Nation
+      price: 2.53
+    -
+      code: CFG
+      name: Cardinal Finance Gang
+      price: 8.29
+    -
+      code: DDD
+      name: Double Digit Ding Dongs
+      price: 11.77
+    -
+      code: ERW
+      name: Erwin Richards Way
+      price: 3.54
+    -
+      code: FIN
+      name: Fisheries International Norway
+      price: 5.81
+    -
+      code: GG
+      name: Good Game
+      price: 7.01
+    -
+      code: HUD
+      name: Harold Underman Districts
+      price: 3.27
+    -
+      code: II
+      name: Igloo Industries
+      price: 9.12
+    -
+      code: JDD
+      name: Jammy Dodgy Dodgems
+      price: 11.04
+
