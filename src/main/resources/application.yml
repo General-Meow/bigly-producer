@@ -5,7 +5,7 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       compression-type: gzip
       client-id: bigly-producer
-    bootstrap-servers: ${BOOTSTRAP_SERVER:192.168.1.81}:${BOOTSTRAP_SERVER_PORT:9092}"
+    bootstrap-servers: ${BOOTSTRAP_SERVER:192.168.1.81}:${BOOTSTRAP_SERVER_PORT:9092}
 
 app:
   test: blah
