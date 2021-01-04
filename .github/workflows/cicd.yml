@@ -23,7 +23,8 @@ jobs:
 
       - name: upload artifact
         uses: actions/upload-artifact@v2
-          path: build/libs/bigly-producer*.jar
+        with:
+          path: ./build/libs/bigly-producer*.jar
 
 #      - name: build docker image
 #        run: ./gradlew clean bootBuildImage
