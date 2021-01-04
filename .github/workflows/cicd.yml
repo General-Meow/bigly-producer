@@ -23,7 +23,6 @@ jobs:
 
       - name: upload artifact
         uses: actions/upload-artifact@v2
-          name: bigly-producer
           path: build/libs/bigly-producer*.jar
 
 #      - name: build docker image
