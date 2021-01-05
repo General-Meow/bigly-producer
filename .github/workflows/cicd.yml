@@ -35,7 +35,9 @@ jobs:
         run: echo "::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk '{print $2}')"
 
       - name: debug
-        run: echo '${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}'
+        run: echo '${{ secrets.DOCKERHUB_USERNAME }}
+      - name: debug
+        run: echo '${{ secrets.DOCKERHUB_TOKEN }}'
 
       - name: docker login
         uses: docker/login-action@v1
