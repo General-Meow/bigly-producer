@@ -15,8 +15,8 @@ jobs:
 #      - name: run code quality checks
 #        run:
 #
-#      - name: run tests
-#        run:
+      - name: run tests
+        run: ./gradlew clean test -i
 
       - name: build with gradle
         run: ./gradlew clean bootJar
@@ -24,10 +24,25 @@ jobs:
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
+          name: bigly-producer-latest
           path: ./build/libs/bigly-producer*.jar
 
-#      - name: build docker image
-#        run: ./gradlew clean bootBuildImage
+      - name: build docker image
+        run: ./gradlew clean bootBuildImage --imageName=generalmeow/bigly-producer
+
+      - name: get image version
+        id: image_version_step
+        run: echo '::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk \'{print $2}\')'
+
+      - name: debug
+        run: echo '${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}'
+
+      - name: docker login
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
 #
 #      - name: upload docker image
 #        run:
