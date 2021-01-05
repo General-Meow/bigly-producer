@@ -21,6 +21,10 @@ jobs:
       - name: build with gradle
         run: ./gradlew clean bootJar
 
+      - name: get artifact version
+        id: image_version_step
+        run: echo "::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk '{print $2}')"
+
       - name: upload artifact
         uses: actions/upload-artifact@v2
         with:
@@ -31,11 +35,6 @@ jobs:
         run: |
           ./gradlew clean bootBuildImage --imageName=generalmeow/bigly-producer
           docker tag generalmeow/bigly-producer:latest generalmeow/bigly-producer:${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}
-
-      - name: get image version
-        id: image_version_step
-        run: echo "::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk '{print $2}')"
-
 
       - name: docker login
         uses: docker/login-action@v1
