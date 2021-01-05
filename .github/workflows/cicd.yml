@@ -43,8 +43,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-#
-#      - name: upload docker image
-#        run:
-#
-#      - name: deploy docker image
+      - name: upload docker image
+        run: docker push generalmeow/bigly-producer:${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}
