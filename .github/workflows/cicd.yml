@@ -28,16 +28,14 @@ jobs:
           path: ./build/libs/bigly-producer*.jar
 
       - name: build docker image
-        run: ./gradlew clean bootBuildImage --imageName=generalmeow/bigly-producer
+        run: |
+          ./gradlew clean bootBuildImage --imageName=generalmeow/bigly-producer
+          docker tag generalmeow/bigly-producer:latest generalmeow/bigly-producer:${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}
 
       - name: get image version
         id: image_version_step
         run: echo "::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk '{print $2}')"
 
-      - name: debug
-        run: echo '${{ secrets.DOCKERHUB_USERNAME }}'
-      - name: debug
-        run: echo '${{ secrets.DOCKERHUB_TOKEN }}'
 
       - name: docker login
         uses: docker/login-action@v1
@@ -46,4 +44,6 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: upload docker image
-        run: docker push generalmeow/bigly-producer:${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}
+        run: |
+          docker push generalmeow/bigly-producer:${{ steps.image_version_step.outputs.ARTIFACT_VERSION }}
+          docker push generalmeow/bigly-producer:latest
