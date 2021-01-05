@@ -2,6 +2,10 @@ plugins {
 	id 'org.springframework.boot' version '2.4.0'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
+	id "checkstyle"
+	id "jacoco"
+
+	id "org.sonarqube" version "3.0"
 }
 
 group = 'com.paulhoang'
@@ -31,6 +35,31 @@ dependencies {
 
 }
 
+checkstyle {
+	toolVersion = "8.29"
+	config = resources.text.fromArchiveEntry(configurations.checkstyle[0], "google_checks.xml")
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		xml.enabled true
+	}
+}
+
+
 test {
+	finalizedBy jacocoTestReport
 	useJUnitPlatform()
+}
+
+sonarqube {
+	properties {
+		property "sonar.login", System.getenv("SONAR_TOKEN")
+		property "sonar.projectKey", "General-Meow_bigly-producer"
+		property "sonar.organization", "general-meow"
+		property "sonar.host.url", "https://sonarcloud.io"
+		property "sonar.java.checkstyle.reportPaths",
+				"build/reports/checkstyle/main.xml,build/reports/checkstyle/test.xml"
+	}
 }

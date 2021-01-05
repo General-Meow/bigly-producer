@@ -12,8 +12,8 @@ jobs:
           java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
           architecture: x64 # (x64 or x86) - defaults to x64
 #
-#      - name: run code quality checks
-#        run:
+      - name: run code quality checks
+        run: ./gradlew clean sonarqube -i
 #
       - name: run tests
         run: ./gradlew clean test -i
