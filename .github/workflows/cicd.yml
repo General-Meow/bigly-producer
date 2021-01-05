@@ -35,7 +35,7 @@ jobs:
         run: echo "::set-output name=ARTIFACT_VERSION::$(./gradlew properties | grep version | awk '{print $2}')"
 
       - name: debug
-        run: echo '${{ secrets.DOCKERHUB_USERNAME }}
+        run: echo '${{ secrets.DOCKERHUB_USERNAME }}'
       - name: debug
         run: echo '${{ secrets.DOCKERHUB_TOKEN }}'
 
