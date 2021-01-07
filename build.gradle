@@ -2,9 +2,9 @@ plugins {
 	id 'org.springframework.boot' version '2.4.0'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
-	id "checkstyle"
-	id "jacoco"
+//	id "checkstyle"
 
+	id "jacoco"
 	id "org.sonarqube" version "3.0"
 }
 
@@ -28,6 +28,7 @@ dependencies {
 	implementation 'org.springframework.kafka:spring-kafka'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	implementation 'com.google.guava:guava:30.1-jre'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.kafka:spring-kafka-test'
 
@@ -35,19 +36,20 @@ dependencies {
 
 }
 
-checkstyle {
-	toolVersion = "8.29"
-	config = resources.text.fromArchiveEntry(configurations.checkstyle[0], "google_checks.xml")
-}
-
+//checkstyle {
+//	toolVersion = "8.29"
+//	config = resources.text.fromArchiveEntry(configurations.checkstyle[0], "google_checks.xml")
+//}
+//
 jacocoTestReport {
 	reports {
 		html.enabled true
 		xml.enabled true
 	}
+	dependsOn test
 }
-
-
+//
+//
 test {
 	finalizedBy jacocoTestReport
 	useJUnitPlatform()
@@ -55,11 +57,13 @@ test {
 
 sonarqube {
 	properties {
-		property "sonar.login", System.getenv("SONAR_TOKEN")
+		property "sonar.login", System.getenv("BIGLY_SONARCLOUD_TOKEN")
 		property "sonar.projectKey", "General-Meow_bigly-producer"
 		property "sonar.organization", "general-meow"
 		property "sonar.host.url", "https://sonarcloud.io"
-		property "sonar.java.checkstyle.reportPaths",
-				"build/reports/checkstyle/main.xml,build/reports/checkstyle/test.xml"
+		property "sonar.exclusions", "src/main/java/com/paulhoang/biglyproducer/data"
+		property "sonar.coverage.exclusions", "**/com/paulhoang/biglyproducer/data/*,src/main/java/com/paulhoang/biglyproducer/BiglyProducerApplication.java"
+//		property "sonar.java.checkstyle.reportPaths",
+//				"build/reports/checkstyle/main.xml,build/reports/checkstyle/test.xml"
 	}
 }

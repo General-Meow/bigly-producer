@@ -1,53 +1,52 @@
 package com.paulhoang.biglyproducer.service;
 
-import com.google.gson.Gson;
 import com.paulhoang.biglyproducer.config.CompanyConfiguration;
 import com.paulhoang.biglyproducer.data.CompanyPrice;
 import com.paulhoang.biglyproducer.data.Operand;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class ProducerService {
 
   private final GsonService gsonService;
   private final KafkaTemplate<String, String> kafkaTemplate;
-  private final List<CompanyPrice> companies;
+  private CompanyConfiguration companyConfiguration;
 
   @Autowired
   public ProducerService(GsonService gsonService, KafkaTemplate<String, String> kafkaTemplate,
       CompanyConfiguration companyConfiguration) {
     this.gsonService = gsonService;
     this.kafkaTemplate = kafkaTemplate;
-    this.companies = companyConfiguration.getCompanies()  ;
+    this.companyConfiguration = companyConfiguration;
   }
 
   @Scheduled(initialDelay = 1000L, fixedRate = 1000L)
   public void triggerSchedule() {
-    System.out.println("hello!");
+    log.info("Sending data to Kafka!");
 
-    fluxPriceData(companies);
-    sendPriceDataToKafka(companies);
+    updatePriceData(companyConfiguration.getCompanies());
+    sendPriceDataToKafka(companyConfiguration.getCompanies());
   }
 
-  private void fluxPriceData(List<CompanyPrice> companies) {
+  private void updatePriceData(List<CompanyPrice> companies) {
     companies.forEach(c -> {
-      BigDecimal amount = getFluxAmount();
+      BigDecimal amount = getUpdateAmount();
       Operand operand = chooseOperand();
-      switch (operand){
-        case PLUS:
-          c.setPrice(c.getPrice().add(amount));
-        case MINUS:
-          c.setPrice(c.getPrice().subtract(amount));
+      if (operand.equals(Operand.PLUS)) {
+        c.setPrice(c.getPrice().add(amount).setScale(2, RoundingMode.HALF_UP));
+      } else {
+        c.setPrice(c.getPrice().subtract(amount).setScale(2, RoundingMode.HALF_UP));
       }
-      //round
-      c.setPrice(c.getPrice().setScale(2, RoundingMode.HALF_UP));
     });
   }
 
@@ -56,16 +55,20 @@ public class ProducerService {
     return Operand.values()[randomNumber];
   }
 
-  private BigDecimal getFluxAmount() {
-    return new BigDecimal(getRandomBigDecimalUpTo(0.20d));
+  private BigDecimal getUpdateAmount() {
+    return BigDecimal.valueOf(getRandomBigDecimalUpTo(0.20d));
   }
 
-  protected int getRandomNumberUpTo(int max){
-    return ThreadLocalRandom.current().nextInt(0, max + 1);
+  protected int getRandomNumberUpTo(int max) {
+    SecureRandom random = new SecureRandom();
+    return random.nextInt(max + 1);
   }
 
-  protected double getRandomBigDecimalUpTo(double max){
-    return ThreadLocalRandom.current().nextDouble(0.0d, max);
+  protected double getRandomBigDecimalUpTo(double max) {
+    SecureRandom random = new SecureRandom();
+    double randomDoubleUnder1 = random.nextDouble();
+    double randomBigDecimalUpToMax = getRandomNumberUpTo(Double.valueOf(max).intValue());
+    return randomBigDecimalUpToMax + randomDoubleUnder1;
   }
 
   private void sendPriceDataToKafka(List<CompanyPrice> companies) {
