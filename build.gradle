@@ -57,9 +57,9 @@ test {
 
 sonarqube {
 	properties {
-		property "sonar.login", System.getenv("BIGLY_SONARCLOUD_TOKEN")
+//		property "sonar.login", System.getenv("BIGLY_SONARCLOUD_TOKEN")
 		property "sonar.projectKey", "General-Meow_bigly-producer"
-		property "sonar.organization", "general-meow"
+		property "sonar.orgnization", "general-meow"
 		property "sonar.host.url", "https://sonarcloud.io"
 		property "sonar.exclusions", "src/main/java/com/paulhoang/biglyproducer/data"
 		property "sonar.coverage.exclusions", "**/com/paulhoang/biglyproducer/data/*,src/main/java/com/paulhoang/biglyproducer/BiglyProducerApplication.java"
