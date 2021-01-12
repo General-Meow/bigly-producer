@@ -2,7 +2,7 @@ plugins {
 	id 'org.springframework.boot' version '2.4.0'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'java'
-//	id "checkstyle"
+	id "checkstyle"
 
 	id "jacoco"
 	id "org.sonarqube" version "3.0"
@@ -36,22 +36,22 @@ dependencies {
 
 }
 
-//checkstyle {
-//	toolVersion = "8.29"
-//	config = resources.text.fromArchiveEntry(configurations.checkstyle[0], "google_checks.xml")
-//}
-//
+checkstyle {
+	toolVersion = "8.29"
+	config = resources.text.fromArchiveEntry(configurations.checkstyle[0], "google_checks.xml")
+}
+
 jacocoTestReport {
 	reports {
 		html.enabled true
 		xml.enabled true
 	}
-//	dependsOn test
+	dependsOn test
 }
 //
 //
 test {
-//	finalizedBy jacocoTestReport
+	finalizedBy jacocoTestReport
 	useJUnitPlatform()
 }
 
