@@ -46,12 +46,12 @@ jacocoTestReport {
 		html.enabled true
 		xml.enabled true
 	}
-	dependsOn test
+//	dependsOn test
 }
 //
 //
 test {
-	finalizedBy jacocoTestReport
+//	finalizedBy jacocoTestReport
 	useJUnitPlatform()
 }
 
