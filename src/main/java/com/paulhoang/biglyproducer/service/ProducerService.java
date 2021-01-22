@@ -6,6 +6,7 @@ import com.paulhoang.biglyproducer.data.Operand;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.security.SecureRandom;
+import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import lombok.extern.log4j.Log4j2;
@@ -40,6 +41,7 @@ public class ProducerService {
 
   private void updatePriceData(List<CompanyPrice> companies) {
     companies.forEach(c -> {
+      c.setTime(Instant.now());
       BigDecimal amount = getUpdateAmount();
       Operand operand = chooseOperand();
       if (operand.equals(Operand.PLUS)) {
