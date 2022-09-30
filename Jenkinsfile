@@ -4,17 +4,23 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                ./gradlew clean test
+                script {
+                  ./gradlew clean test
+                }
             }
         }
         stage('Build') {
             steps {
-                ./gradle build
+                script {
+                    ./gradle build
+                 }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                script {
+                    echo 'Deploying....'
+                }
             }
         }
     }
