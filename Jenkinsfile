@@ -3,21 +3,27 @@ pipeline {
 
     stages {
         stage('Test') {
-            steps {
-                sh './gradlew clean test'
+          steps {
+            container('build') {
+              sh './gradlew clean test'
             }
+          }
         }
         stage('Build') {
-            steps {
-                sh './gradlew build'
+          steps {
+            container('build') {
+              sh './gradlew build'
             }
+          }
         }
         stage('Deploy') {
-            steps {
-                script {
-                    echo 'Deploying....'
-                }
+          steps {
+            container('build') {
+              script {
+                  echo 'Deploying....'
+              }
             }
+          }
         }
     }
 }
