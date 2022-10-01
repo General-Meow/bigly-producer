@@ -4,21 +4,21 @@ pipeline {
     stages {
         stage('Test') {
           steps {
-            container('build') {
+            container('builder-container') {
               sh './gradlew clean test'
             }
           }
         }
         stage('Build') {
           steps {
-            container('build') {
+            container('builder-container') {
               sh './gradlew build'
             }
           }
         }
         stage('Deploy') {
           steps {
-            container('build') {
+            container('builder-container') {
               script {
                   echo 'Deploying....'
               }
