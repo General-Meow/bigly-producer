@@ -14,14 +14,14 @@ spec:
       env:
       - name: JENKINS_URL
         value: "http://jenkins.build.svc.cluster.local:8080"
-  - name: builder-container
-    image: ubuntu:latest
-    command:
-    - cat
-    tty: true
-    volumeMounts:
-    - name: docker-dir
-      mountPath: "/var/run"
+    - name: builder-container
+      image: ubuntu:latest
+      command:
+      - cat
+      tty: true
+      volumeMounts:
+      - name: docker-dir
+        mountPath: "/var/run"
         '''
       }
     }
