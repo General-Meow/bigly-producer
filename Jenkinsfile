@@ -15,9 +15,8 @@ spec:
       - name: JENKINS_URL
         value: "http://jenkins.build.svc.cluster.local:8080"
     - name: builder-container
-      image: ubuntu:latest
-      command:
-      - cat
+      image: "amazoncorretto:17.0.4-alpine3.16"
+      command: ["cat"]
       tty: true
       volumeMounts:
       - name: docker-dir
