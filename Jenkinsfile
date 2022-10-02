@@ -22,6 +22,12 @@ spec:
       volumeMounts:
       - name: docker-dir
         mountPath: "/var/run"
+  volumes:
+    - name: dockersock
+      hostPath:
+        path: /var/run/docker.sock
+    - name: docker-dir
+      emptyDir: {}
         '''
       }
     }
