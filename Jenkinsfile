@@ -10,7 +10,7 @@ metadata:
 spec:
   containers:
     - name: "jnlp"
-      image: "jenkins/jnlp-slave"
+      image: "jenkins/inbound-agent"
       env:
       - name: JENKINS_URL
         value: "http://jenkins.build.svc.cluster.local:8080"
